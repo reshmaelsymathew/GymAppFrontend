@@ -14,7 +14,7 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/AppNavigator";
 import { BASE_URL } from "../constants/api"; // Constant for backend base URL
-import { ORG_NAME_FIRST, ORG_NAME_SECOND } from "../constants/code"; // Constant for backend base URL
+import { ORG_NAME_FIRST, ORG_NAME_SECOND } from "../constants/code"; // Constant for App names
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -22,6 +22,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import "../global.css";
+import Animated, { FadeIn, FadeInDown, FadeOut } from "react-native-reanimated";
 
 // Define the props type for navigation
 type Props = {
@@ -38,6 +39,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [serverError, setServerError] = useState("");
+
+  //for development purpose only.
+  navigation.navigate("Home", { username });
 
   // Function to handle login form submission
   const handleLogin = async () => {
@@ -100,7 +104,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       />
 
       <View className="flex flex-col gap-4 p-4 justify-center">
-        <View className=" p-4 justify-center flex-row ">
+        <Animated.View
+          entering={FadeInDown.delay(200).springify()}
+          className=" p-4 justify-center flex-row "
+        >
           <Text
             style={{ fontSize: hp(5) }}
             className=" text-white px-4 py-2 font-bold tracking-wide "
@@ -110,7 +117,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               {ORG_NAME_SECOND}
             </Text>
           </Text>
-        </View>
+        </Animated.View>
         {/* Username input field */}
         <TextInput
           style={styles.input}
@@ -125,7 +132,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         {/* Password input field */}
         <TextInput
           style={styles.input}
-          className=" text-white border border-gray-300 py-2 rounded"
+          className=" text-white border border-gray-300 py-2"
           placeholderTextColor="#fff"
           placeholder="    Password"
           secureTextEntry
