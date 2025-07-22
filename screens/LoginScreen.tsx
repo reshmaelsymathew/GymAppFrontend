@@ -1,46 +1,62 @@
 // screens/LoginScreen.tsx
 
 // Import necessary modules from React and React Native
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { BASE_URL } from '../constants/api'; // Constant for backend base URL
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/AppNavigator";
+import { BASE_URL } from "../constants/api"; // Constant for backend base URL
+import { ORG_NAME_FIRST, ORG_NAME_SECOND } from "../constants/code"; // Constant for backend base URL
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { StatusBar } from "expo-status-bar";
+import { LinearGradient } from "expo-linear-gradient";
+import "../global.css";
 
 // Define the props type for navigation
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, "Login">;
 };
 
 // Define and export the LoginScreen component
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   // States to hold the input values
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   // States for inline error messages
-  const [usernameError, setUsernameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [serverError, setServerError] = useState('');
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [serverError, setServerError] = useState("");
 
   // Function to handle login form submission
   const handleLogin = async () => {
     let isValid = true;
 
     // Reset previous error messages
-    setUsernameError('');
-    setPasswordError('');
-    setServerError('');
+    setUsernameError("");
+    setPasswordError("");
+    setServerError("");
 
     // Validate username (mobile number)
     if (!username) {
-      setUsernameError('Username is required');
+      setUsernameError("Username is required");
       isValid = false;
     }
 
     // Validate password
     if (!password) {
-      setPasswordError('Password is required');
+      setPasswordError("Password is required");
       isValid = false;
     }
 
@@ -50,9 +66,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     try {
       // Send POST request to Django login endpoint
       const response = await fetch(`${BASE_URL}/user/login/`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
       });
@@ -62,62 +78,93 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
       if (response.ok) {
         // If login is successful, navigate to Home screen and pass fullName
-        navigation.navigate('Home', { username });
+        navigation.navigate("Home", { username });
       } else {
         // If login fails, show message from backend or default message
-        setServerError(data.message || 'Invalid credentials');
+        setServerError(data.message || "Invalid credentials");
       }
     } catch (error) {
       // Handle network or server errors
-      setServerError('Failed to connect to the server');
+      setServerError("Failed to connect to the server");
     }
   };
 
   // JSX to render the UI
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+    <View className="flex-1 flex justify-center">
+      <StatusBar style="light" />
 
-      {/* Username input field */}
-      <TextInput
-        placeholder="Username"
-        style={styles.input}
-        value={username}
-        onChangeText={setUsername}
+      <Image
+        className="h-full w-full absolute"
+        source={require("../assets/images/firstPage.png")}
       />
-      {!!usernameError && <Text style={styles.error}>{usernameError}</Text>}
 
-      {/* Password input field */}
-      <TextInput
-        placeholder="Password"
-        secureTextEntry
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-      />
-      {!!passwordError && <Text style={styles.error}>{passwordError}</Text>}
+      <View className="flex flex-col gap-4 p-4 justify-center">
+        <View className=" p-4 justify-center flex-row ">
+          <Text
+            style={{ fontSize: hp(5) }}
+            className=" text-white px-4 py-2 font-bold tracking-wide "
+          >
+            {ORG_NAME_FIRST}
+            <Text className=" text-rose-500 text-bold px-4 py-2">
+              {ORG_NAME_SECOND}
+            </Text>
+          </Text>
+        </View>
+        {/* Username input field */}
+        <TextInput
+          style={styles.input}
+          className="text-white border border-gray-300 py-2"
+          placeholderTextColor="#fff"
+          placeholder="    Mobile Number"
+          value={username}
+          onChangeText={setUsername}
+        />
+        {!!usernameError && <Text style={styles.error}>{usernameError}</Text>}
 
-      {/* Server-side error message */}
-      {!!serverError && <Text style={styles.error}>{serverError}</Text>}
+        {/* Password input field */}
+        <TextInput
+          style={styles.input}
+          className=" text-white border border-gray-300 py-2 rounded"
+          placeholderTextColor="#fff"
+          placeholder="    Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        {!!passwordError && <Text style={styles.error}>{passwordError}</Text>}
 
-      {/* Login button */}
-      <Button title="Login" onPress={handleLogin} />
+        {/* Server-side error message */}
+        {!!serverError && <Text style={styles.error}>{serverError}</Text>}
 
-      {/* Link to Register screen */}
-      <Text style={styles.registerLink} onPress={() => navigation.navigate('Register')}>
-        Don’t have an account? Register
-      </Text>
+        {/* Login button */}
+        <TouchableOpacity
+          style={styles.input}
+          className=" bg-blue-600 py-2 rounded "
+          onPress={handleLogin}
+        >
+          <Text className="text-white text-lg text-center">Login</Text>
+        </TouchableOpacity>
+
+        {/* Link to Register screen */}
+        <Text
+          onPress={() => navigation.navigate("Register")}
+          className=" text-white text-center"
+        >
+          Don’t have an account? Register
+        </Text>
+      </View>
     </View>
   );
 };
 
 // Define styling for components
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  input: { borderWidth: 1, padding: 10, marginBottom: 5, borderRadius: 5 },
-  error: { color: 'red', marginBottom: 10 },
-  registerLink: { color: 'blue', marginTop: 10, textAlign: 'center' },
+  container: { flex: 1, justifyContent: "center", padding: 20 },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
+  input: { borderWidth: 1, borderRadius: 8 },
+  error: { color: "red", marginBottom: 10 },
+  registerLink: { color: "blue", marginTop: 10, textAlign: "center" },
 });
 
 // Export the component so it can be used in navigation
