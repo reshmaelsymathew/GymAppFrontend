@@ -25,7 +25,14 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-100 px-6 py-8">
-      <DashboardSlider></DashboardSlider>
+      <TouchableOpacity
+        className="bg-white rounded-lg p-4 mb-4 shadow"
+        onPress={() => navigation.navigate(`WorkoutList`)}
+      >
+        <Text className="text-lg font-semibold text-gray-800">
+          exercise list
+        </Text>
+      </TouchableOpacity>
 
       <View>
         <Text className="text-2xl font-bold text-center mb-6">

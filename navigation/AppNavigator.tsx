@@ -5,12 +5,14 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import WorkoutTracker from "../screens/WorkoutTracker";
 import HomeScreen from "../screens/HomeScreen";
+import ExerciseTileSlider from "@/screens/ExerciseTileSlider";
 
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Home: { username: string };
   Tracker: undefined;
+  WorkoutList: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -37,6 +39,11 @@ const AppNavigator = () => {
         name="Tracker"
         component={WorkoutTracker}
         options={{ title: "Tracker", headerShown: false }}
+      />
+      <Stack.Screen
+        name="WorkoutList"
+        component={ExerciseTileSlider}
+        options={{ title: "WorkoutList", headerShown: false }}
       />
     </Stack.Navigator>
   );
