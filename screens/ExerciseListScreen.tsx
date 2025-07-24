@@ -17,9 +17,8 @@ import { SLIDER_IMAGES } from "@/constants/code";
 import "../global.css";
 
 const { width } = Dimensions.get("window");
-let imageName = "";
 
-const ExerciseTileSlider = () => {
+const ExerciseListScreen = () => {
   return (
     <View style={styles.container}>
       {/* Top Section */}
@@ -159,4 +158,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExerciseTileSlider;
+export default ExerciseListScreen;

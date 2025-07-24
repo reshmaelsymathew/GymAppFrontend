@@ -5,7 +5,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import WorkoutTracker from "../screens/WorkoutTracker";
 import HomeScreen from "../screens/HomeScreen";
-import ExerciseTileSlider from "@/screens/ExerciseTileSlider";
+import ExerciseListScreen from "@/screens/ExerciseListScreen";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -42,7 +42,7 @@ const AppNavigator = () => {
       />
       <Stack.Screen
         name="WorkoutList"
-        component={ExerciseTileSlider}
+        component={ExerciseListScreen}
         options={{ title: "WorkoutList", headerShown: false }}
       />
     </Stack.Navigator>
